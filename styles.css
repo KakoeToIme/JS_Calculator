@@ -49,7 +49,28 @@ body {
     direction: rtl;
 }
 
-.numpad {
+.operand {
+    position: absolute;
+    bottom: 8%;
+    font-size: 36px;
+    font-weight: 500;
+    padding-bottom: 20px;
+    max-width: 100%;
+    overflow: hidden;
+    left: 0;
+}
+
+.numpadTwo {
+    position: absolute;
+    bottom: 18%;
+    font-size: 36px;
+    font-weight: 500;
+    padding-bottom: 20px;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.numpadOne {
     position: absolute;
     bottom: 0;
     font-size: 36px;

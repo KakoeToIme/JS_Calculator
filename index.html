@@ -16,7 +16,9 @@
         <div class="screen">
             <div class="calculator">
                 <div class="calc-display">
-                    <div class="numpad" contenteditable="true">0</div>
+                    <div class="numpadTwo"></div>
+                    <div class="operand"></div>
+                    <div class="numpadOne">0</div>
                 </div>
                 <div class="calc-buttons">
                     <button id="clear" class="common-button orange" onclick="AC()">AC</button>
@@ -34,11 +36,11 @@
                     <button class="common-button" onclick="displayNum(1)">1</button>
                     <button class="common-button" onclick="displayNum(2)">2</button>
                     <button class="common-button" onclick="displayNum(3)">3</button>
-                    <button class="common-button orange">+</button>
+                    <button class="common-button orange" onclick="PLUS()">+</button>
                     <button class="common-button orange">R</button>
                     <button class="common-button" onclick="displayNum(0)">0</button>
                     <button class="common-button">.</button>
-                    <button class="common-button equal">=</button>
+                    <button class="common-button equal" onclick="EQUAL()">=</button>
                 </div>
             </div>
         </div>
