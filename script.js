@@ -2,6 +2,9 @@
 
 let clearAfterEqual = false;
 
+let count = 0;
+const oldAndNewOper = ['', ''];
+
 const displayNum = val => {
     if (clearAfterEqual === true) {
         AC();
@@ -15,12 +18,12 @@ const displayNum = val => {
     if (displayVal[0].textContent.length <= 15) allowEdit = true;
 
     if (displayVal[0].textContent !== '0' && allowEdit === true) document.getElementsByClassName('numpadOne')[0].textContent += val;
-    else if (val === '.' && allowEdit === true && document.getElementsByClassName('numpadOne')[0].textContent === '0') 
+    else if (val === '.' && allowEdit === true && document.getElementsByClassName('numpadOne')[0].textContent === '0')
         document.getElementsByClassName('numpadOne')[0].textContent += val;
     else if (allowEdit === true & val !== '.') {
         document.getElementsByClassName('numpadOne')[0].textContent = val;
         document.getElementById('clear').textContent = 'C';
-    } 
+    }
 }
 
 const EQUAL = () => {
@@ -63,6 +66,9 @@ const AC = () => {
     document.getElementsByClassName('numpadTwo')[0].textContent = '';
     document.getElementsByClassName('operand')[0].textContent = '';
     document.getElementById('clear').textContent = 'AC';
+    count = 0;
+    oldAndNewOper[0] = '';
+    oldAndNewOper[1] = '';
 }
 
 const DEL = () => {
@@ -78,6 +84,7 @@ const DEL = () => {
 const PLUS = () => {
     checkOperand();
     changeOperand('+');
+    savePrevAndNewOperand('+');
 
     let temp = 0;
     const firstNum = document.getElementsByClassName('numpadOne')[0].textContent;
@@ -97,17 +104,18 @@ const PLUS = () => {
 
 const MINUS = () => {
     checkOperand();
-    changeOperand('-');
+    savePrevAndNewOperand('-');
 
     let temp = 0;
     const firstNum = document.getElementsByClassName('numpadOne')[0].textContent;
 
-    if (document.getElementsByClassName('numpadTwo')[0].textContent === '') {
+    if (document.getElementsByClassName('numpadOne')[0].textContent === '0') {
+        document.getElementsByClassName('numpadOne')[0].textContent = '-';
+    } else if (document.getElementsByClassName('numpadTwo')[0].textContent === '') {
         document.getElementsByClassName('numpadTwo')[0].textContent = firstNum;
         document.getElementsByClassName('operand')[0].textContent = '-';
         document.getElementsByClassName('numpadOne')[0].textContent = '0';
-    }
-    else {
+    } else {
         temp = Number(document.getElementsByClassName('numpadTwo')[0].textContent) - Number(firstNum);
         document.getElementsByClassName('numpadTwo')[0].textContent = temp;
         document.getElementsByClassName('operand')[0].textContent = '-';
@@ -118,6 +126,7 @@ const MINUS = () => {
 const MULTIPLICATION = () => {
     checkOperand();
     changeOperand('*');
+    savePrevAndNewOperand('*');
 
     let temp = 0;
     const firstNum = document.getElementsByClassName('numpadOne')[0].textContent;
@@ -137,6 +146,7 @@ const MULTIPLICATION = () => {
 const DIVISION = () => {
     checkOperand();
     changeOperand('/');
+    savePrevAndNewOperand('/');
 
     let temp = 0;
     const firstNum = document.getElementsByClassName('numpadOne')[0].textContent;
@@ -156,6 +166,7 @@ const DIVISION = () => {
 const MOD_DIVISION = () => {
     checkOperand();
     changeOperand('%');
+    savePrevAndNewOperand('%');
 
     let temp = 0;
     const firstNum = document.getElementsByClassName('numpadOne')[0].textContent;
@@ -190,7 +201,17 @@ const changeOperand = oper => {
         document.getElementsByClassName('numpadOne')[0].textContent === '0') document.getElementsByClassName('operand')[0].textContent = oper;
 }
 
+const savePrevAndNewOperand = oper => {
+    if (count === 0) {
+        count++;
+        oldAndNewOper[1] = oper;
+    } else {
+        oldAndNewOper[0] = oldAndNewOper[1];
+        oldAndNewOper[1] = oper;
+    }
 
- // Исправить баг со знаками при поочередном нажатии на операнды
- // Точки идут слева от цифр, минусы справа, исправить
- // Рефакторинг (много повторяющегося кода)
+    console.log(oldAndNewOper);
+}
+//Исправить баг, что в numpadOne или numpadTwo может стоять минус без числа
+// Исправить баг со знаками при поочередном нажатии на операнды (savePrevAndNewOperand функцию довести до конца)
+// Рефакторинг (много повторяющегося кода)

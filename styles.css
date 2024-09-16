@@ -46,7 +46,6 @@ body {
     position: relative;
     width: 100%;
     display: flex;
-    direction: rtl;
 }
 
 .operand {
@@ -63,6 +62,7 @@ body {
 .numpadTwo {
     position: absolute;
     bottom: 18%;
+    right: 0;
     font-size: 36px;
     font-weight: 500;
     padding-bottom: 20px;
@@ -73,6 +73,7 @@ body {
 .numpadOne {
     position: absolute;
     bottom: 0;
+    right: 0;
     font-size: 36px;
     font-weight: 500;
     padding-bottom: 20px;
