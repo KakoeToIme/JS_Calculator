@@ -17,6 +17,9 @@ const displayNum = val => {
     if (displayVal[0].textContent.length > 15) allowEdit = false;
     if (displayVal[0].textContent.length <= 15) allowEdit = true;
 
+    if (checkMinus() && val === '.') return;
+    if (displayVal[0].textContent.includes('.') && val === '.') return;
+
     if (displayVal[0].textContent !== '0' && allowEdit === true) document.getElementsByClassName('numpadOne')[0].textContent += val;
     else if (val === '.' && allowEdit === true && document.getElementsByClassName('numpadOne')[0].textContent === '0')
         document.getElementsByClassName('numpadOne')[0].textContent += val;
@@ -82,8 +85,9 @@ const DEL = () => {
 }
 
 const PLUS = () => {
+    if (checkMinus()) return;
+
     checkOperand();
-    changeOperand('+');
     savePrevAndNewOperand('+');
 
     let temp = 0;
@@ -93,16 +97,16 @@ const PLUS = () => {
         document.getElementsByClassName('numpadTwo')[0].textContent = firstNum;
         document.getElementsByClassName('operand')[0].textContent = '+';
         document.getElementsByClassName('numpadOne')[0].textContent = '0';
+    } else if (document.getElementsByClassName('numpadOne')[0].textContent !== '0' && document.getElementsByClassName('numpadTwo')[0].textContent !== '') {
+        completeLastAction();
     }
-    else {
-        temp = Number(firstNum) + Number(document.getElementsByClassName('numpadTwo')[0].textContent);
-        document.getElementsByClassName('numpadTwo')[0].textContent = temp;
-        document.getElementsByClassName('operand')[0].textContent = '+';
-        document.getElementsByClassName('numpadOne')[0].textContent = '0';
-    }
+
+    changeOperand('+');
 }
 
 const MINUS = () => {
+    if (checkMinus()) return;
+
     checkOperand();
     savePrevAndNewOperand('-');
 
@@ -115,17 +119,17 @@ const MINUS = () => {
         document.getElementsByClassName('numpadTwo')[0].textContent = firstNum;
         document.getElementsByClassName('operand')[0].textContent = '-';
         document.getElementsByClassName('numpadOne')[0].textContent = '0';
-    } else {
-        temp = Number(document.getElementsByClassName('numpadTwo')[0].textContent) - Number(firstNum);
-        document.getElementsByClassName('numpadTwo')[0].textContent = temp;
-        document.getElementsByClassName('operand')[0].textContent = '-';
-        document.getElementsByClassName('numpadOne')[0].textContent = '0';
+    } else if (document.getElementsByClassName('numpadOne')[0].textContent !== '0' && document.getElementsByClassName('numpadTwo')[0].textContent !== '') {
+        completeLastAction();
     }
+
+    changeOperand('-');
 }
 
 const MULTIPLICATION = () => {
+    if (checkMinus()) return;
+
     checkOperand();
-    changeOperand('*');
     savePrevAndNewOperand('*');
 
     let temp = 0;
@@ -135,17 +139,17 @@ const MULTIPLICATION = () => {
         document.getElementsByClassName('numpadTwo')[0].textContent = firstNum;
         document.getElementsByClassName('operand')[0].textContent = '*';
         document.getElementsByClassName('numpadOne')[0].textContent = '0';
-    } else if (document.getElementsByClassName('numpadOne')[0].textContent !== '0') {
-        temp = Number(document.getElementsByClassName('numpadTwo')[0].textContent) * Number(firstNum);
-        document.getElementsByClassName('numpadTwo')[0].textContent = temp;
-        document.getElementsByClassName('operand')[0].textContent = '*';
-        document.getElementsByClassName('numpadOne')[0].textContent = '0';
+    } else if (document.getElementsByClassName('numpadOne')[0].textContent !== '0' && document.getElementsByClassName('numpadTwo')[0].textContent !== '') {
+        completeLastAction();
     }
+
+    changeOperand('*');
 }
 
 const DIVISION = () => {
+    if (checkMinus()) return;
+
     checkOperand();
-    changeOperand('/');
     savePrevAndNewOperand('/');
 
     let temp = 0;
@@ -155,17 +159,17 @@ const DIVISION = () => {
         document.getElementsByClassName('numpadTwo')[0].textContent = firstNum;
         document.getElementsByClassName('operand')[0].textContent = '/';
         document.getElementsByClassName('numpadOne')[0].textContent = '0';
-    } else if (document.getElementsByClassName('numpadOne')[0].textContent !== '0') {
-        temp = Number(document.getElementsByClassName('numpadTwo')[0].textContent) / Number(firstNum);
-        document.getElementsByClassName('numpadTwo')[0].textContent = temp;
-        document.getElementsByClassName('operand')[0].textContent = '/';
-        document.getElementsByClassName('numpadOne')[0].textContent = '0';
+    } else if (document.getElementsByClassName('numpadOne')[0].textContent !== '0' && document.getElementsByClassName('numpadTwo')[0].textContent !== '') {
+        completeLastAction();
     }
+
+    changeOperand('/');
 }
 
 const MOD_DIVISION = () => {
+    if (checkMinus()) return;
+
     checkOperand();
-    changeOperand('%');
     savePrevAndNewOperand('%');
 
     let temp = 0;
@@ -175,15 +179,16 @@ const MOD_DIVISION = () => {
         document.getElementsByClassName('numpadTwo')[0].textContent = firstNum;
         document.getElementsByClassName('operand')[0].textContent = '%';
         document.getElementsByClassName('numpadOne')[0].textContent = '0';
-    } else if (document.getElementsByClassName('numpadOne')[0].textContent !== '0') {
-        temp = Number(document.getElementsByClassName('numpadTwo')[0].textContent) % Number(firstNum);
-        document.getElementsByClassName('numpadTwo')[0].textContent = temp;
-        document.getElementsByClassName('operand')[0].textContent = '%';
-        document.getElementsByClassName('numpadOne')[0].textContent = '0';
+    } else if (document.getElementsByClassName('numpadOne')[0].textContent !== '0' && document.getElementsByClassName('numpadTwo')[0].textContent !== '') {
+        completeLastAction();
     }
+
+    changeOperand('%');
 }
 
 const ROUND = () => {
+    if (checkMinus()) return;
+
     let temp = 0;
 
     if (document.getElementsByClassName('numpadTwo')[0].textContent === '' && document.getElementsByClassName('operand')[0].textContent === '') {
@@ -196,10 +201,13 @@ const checkOperand = () => {
     if (clearAfterEqual) clearAfterEqual = false;
 }
 
-const changeOperand = oper => {
+const changeOperand = () => {
     if (document.getElementsByClassName('numpadTwo')[0].textContent !== '' && document.getElementsByClassName('operand')[0].textContent !== '' &&
-        document.getElementsByClassName('numpadOne')[0].textContent === '0') document.getElementsByClassName('operand')[0].textContent = oper;
+        document.getElementsByClassName('numpadOne')[0].textContent === '0') document.getElementsByClassName('operand')[0].textContent = oldAndNewOper[1];
 }
+
+const checkMinus = () => document.getElementsByClassName('numpadOne')[0].textContent === '-' ? true : false;
+
 
 const savePrevAndNewOperand = oper => {
     if (count === 0) {
@@ -209,9 +217,36 @@ const savePrevAndNewOperand = oper => {
         oldAndNewOper[0] = oldAndNewOper[1];
         oldAndNewOper[1] = oper;
     }
-
-    console.log(oldAndNewOper);
 }
-//Исправить баг, что в numpadOne или numpadTwo может стоять минус без числа
-// Исправить баг со знаками при поочередном нажатии на операнды (savePrevAndNewOperand функцию довести до конца)
+
+const completeLastAction = () => {
+    let temp = 0;
+    const firstNum = Number(document.getElementsByClassName('numpadOne')[0].textContent);
+    const secondNum = Number(document.getElementsByClassName('numpadTwo')[0].textContent);
+
+    switch (oldAndNewOper[0]) {
+        case '+':
+            temp = secondNum + firstNum;
+            break;
+        case '-':
+            temp = secondNum - firstNum;
+            break;
+        case '*':
+            temp = secondNum * firstNum;
+            break;
+        case '/':
+            temp = secondNum / firstNum;
+            break;
+        case '%':
+            temp = secondNum % firstNum;
+            break;
+        default:
+            return; 
+    }
+
+    console.log(temp);
+    document.getElementsByClassName('numpadTwo')[0].textContent = temp;
+    document.getElementsByClassName('numpadOne')[0].textContent = '0';
+}
+
 // Рефакторинг (много повторяющегося кода)
